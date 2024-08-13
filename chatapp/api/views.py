@@ -26,7 +26,7 @@ class MessageListCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, room_id):
-        messages = Message.objects.filter(room__id=room_id).order_by('timestamp')
+        messages = Message.objects.filter(room__id=room_id).order_by('-timestamp')
         serializer = MessageSerializer(messages, many=True)
         return Response(serializer.data)
 

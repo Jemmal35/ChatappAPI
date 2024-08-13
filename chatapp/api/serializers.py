@@ -16,7 +16,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class DirectMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = DirectMessage
-        fields = ['id', 'sender', 'receiver', 'content', 'timestamp']
+        fields = ['id', 'sender', 'receiver', 'content', 'is_seen', 'timestamp']
         read_only_fields = ['sender', 'timestamp']
 
 class NotificationSerializer(serializers.ModelSerializer):
