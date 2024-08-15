@@ -24,3 +24,20 @@ document.querySelector('#chat-message-input').onkeyup = function(e) {
         messageInputDom.value = '';
     }
 };
+
+
+
+const socket = new WebSocket('ws://localhost:8000/ws/chat/jemal>/'); // Update with your WebSocket URL
+
+socket.onopen = () => {
+    console.log('WebSocket connection established.');
+    socket.send(JSON.stringify({ message: 'Hello, Jemmal!' })); // Send a message
+};
+
+socket.onmessage = (event) => {
+    console.log('Message from server:', event.data); // Handle incoming messages
+};
+
+socket.onclose = () => {
+    console.log('WebSocket connection closed.');
+};

@@ -1,0 +1,42 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <div id="chat-log"></div>
+    <h4 id = "username">Welcome: </h4>
+    <input id="message-input" type="text" placeholder="Type a message...">
+    <button id="send-button">Send</button>
+
+    <script>
+        const chatLog = document.getElementById('chat-log');
+        const messageInput = document.getElementById('message-input');
+        // const usernameInput = document.getElementById('username');
+        const sendButton = document.getElementById('send-button');
+
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            chatLog.innerHTML += `<p><strong>${data.username}:</strong> ${data.message}</p>`;
+        };
+
+        sendButton.onclick = function(e) {
+            const message = messageInput.value;
+            const username = usernameInput.value || 'Anonymous';
+            chatSocket.send(JSON.stringify({
+                'username': username,
+                'message': message
+            }));
+            messageInput.value = '';
+        };
+    </script>
+</body>
+</html>
