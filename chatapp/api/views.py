@@ -2,8 +2,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from .models import ChatRoom, Message, DirectMessage, Notification
-from .serializers import ChatRoomSerializer, MessageSerializer, DirectMessageSerializer, NotificationSerializer
+from .models import ChatRoom, Message, DirectMessage
+#  Notification
+from .serializers import ChatRoomSerializer, MessageSerializer, DirectMessageSerializer
+# NotificationSerializer
 
 class ChatRoomListCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
