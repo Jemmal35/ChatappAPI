@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-class UserProfile(models.Model):
+class UserProfileWeb(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Additional fields can be added here (e.g., avatar, bio)
     # profile_picture = models.ImageField(null= True, blank= True)

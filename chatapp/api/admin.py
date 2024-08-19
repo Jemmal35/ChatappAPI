@@ -5,4 +5,4 @@ from . import models
 # admin.site.register(models.Message),
 # admin.site.register(models.DirectMessage),
 # admin.site.register(models.Notification),
-# admin.site.register(models.Profile),
+admin.site.register(models.UserProfile),
