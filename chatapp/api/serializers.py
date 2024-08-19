@@ -21,10 +21,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
-
+    username = serializers.CharField(source='user.username', read_only=True)
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'email', 'address', 'profile_picture']
+        fields = ['username','first_name', 'last_name', 'email', 'address', 'profile_picture']
         
     def create(self, validated_data):
         user = validated_data.pop('user')  # Get the user instance
