@@ -2,11 +2,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import  Message, UserProfile
-# # , Notification
 
-# class ChatRoomSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ChatRoom
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -44,6 +41,10 @@ class MessageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['sender'] = self.context['request'].user  # Set the sender to the logged-in user
         return super().create(validated_data)
+
+# class ChatRoomSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ChatRoom
 
 # class DirectMessageSerializer(serializers.ModelSerializer):
 #     class Meta:

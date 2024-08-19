@@ -6,7 +6,9 @@ from .models import  Message, UserProfile
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-#  Notification
+from django.contrib.auth import logout
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from .serializers import  MessageSerializer, UserSerializer, UserProfileSerializer
 # NotificationSerializer
 
@@ -23,7 +25,13 @@ class UserRegistrationView(APIView):
             profile_serializer = UserProfileSerializer(data=profile_data)
             if profile_serializer.is_valid():
                 profile_serializer.save(user=user)  # Link the profile to the user
-                return Response(user_serializer.data, status=201)
+                
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'user': user_serializer.data,
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }, status= status.HTTP_201_CREATED)
             return Response(profile_serializer.errors, status=400)
         return Response(user_serializer.errors, status=400)
 
@@ -72,15 +80,42 @@ class UserProfileDetailView(APIView):
     
 
 class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+    
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
-            return Response({"message": "Login successful"})
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "message": "Login successful",
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            })
         return Response({"error": "Invalid credentials"}, status=400)
 
 
+class LogoutView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    # For Simple jwt token authentication
+    def post(self, request):
+            try:
+                request.auth.blacklist()
+                return Response({"message": "Logout successfully"}, status= status.HTTP_205_RESET_CONTENT) 
+            except Exception as e:
+                return Response({"error": str(e)}, status=400)
+    # For django defualt authentication
+    # def post(self, request):
+    #     logout(request)
+    #     return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+    
+    # For token-based authentication, you can delete the user's token
+    # def post(self, request):
+        # request.user.auth_token.delete()
+        # return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+    
 class MessageView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
