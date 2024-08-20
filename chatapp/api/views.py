@@ -29,6 +29,7 @@ class UserRegistrationView(APIView):
                 
                 refresh = RefreshToken.for_user(user)
                 return Response({
+                    'message':'User registerd sucessfully',
                     'user': user_serializer.data,
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
@@ -158,8 +159,8 @@ class UserMessageView(APIView):
 
         try:
             receiver = User.objects.get(username=receiver_username)
-            
-            serializer = MessageSerializer(data={'receiver': receiver, 'content': content}, context={'request': request})
+            print(receiver.id)
+            serializer = MessageSerializer(data={'receiver': receiver.id, 'content': content}, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
                 return Response({"message": "Message sent successfully"}, status=status.HTTP_201_CREATED)
