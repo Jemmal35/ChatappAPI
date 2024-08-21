@@ -25,8 +25,13 @@ SECRET_KEY = 'django-insecure-&z!v=n9#!@0!ba+$=hwk#9yh5hbsbg6qac*bs3+6k4q&2_ok4g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['ajefchat.onrender.com']
 
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://localhost')
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,6 +128,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+import os
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
