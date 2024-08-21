@@ -2,7 +2,7 @@
     "builds":[{
         "src": "chatapp.wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize" : "15lb", "runtime": "python-3.12.3"}
+        "config": { "maxLambdaSize" : "15lb", "runtime": "python3.9"}
     }],
     "routes": [{
         "src" : "/(.*)",
